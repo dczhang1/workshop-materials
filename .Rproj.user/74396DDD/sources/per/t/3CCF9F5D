@@ -1,0 +1,26 @@
+{
+    "id": "3CCF9F5D",
+    "path": "~/Desktop/workshop-materials/scripts/01-clean.R",
+    "project_path": "scripts/01-clean.R",
+    "type": "r_source",
+    "hash": "2950310252",
+    "contents": "",
+    "dirty": false,
+    "created": 1779895075658.0,
+    "source_on_save": false,
+    "relative_order": 2,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "36,3",
+        "scrollLine": "23"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1779893642,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1779893642,
+    "read_only": false,
+    "read_only_alternatives": []
+}

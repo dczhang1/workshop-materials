@@ -1,0 +1,51 @@
+# 01-clean.R
+# Purpose: Load raw data, apply exclusion criteria, compute scale scores, merge
+# Input:   data/raw/employee_survey.csv, data/raw/supervisor_survey.csv
+# Output:  data/cleaned/study_data.csv
+
+if (!require("tidyverse")) install.packages("tidyverse")
+library(tidyverse)
+
+# ── 1. Load ────────────────────────────────────────────────────────────────────
+
+employees <- read_csv("data/raw/employee_survey.csv")
+supervisors <- read_csv("data/raw/supervisor_survey.csv")
+
+cat("\nRaw employee rows:", nrow(employees))
+cat("\nRaw supervisor rows:", nrow(supervisors), "\n")
+
+# ── 2. Exclude failed attention checks ─────────────────────────────────────────
+
+employees <- employees |>
+  filter(attn_check == 4)
+
+cat("\nAfter attention check exclusion:", nrow(employees), "employees retained\n")
+
+# ── 3. Compute scale scores ───────────────────────────────────────────────────
+
+# Reverse-score js3 (1→5, 2→4, 3→3, 4→2, 5→1), then average items
+employees <- employees |>
+  mutate(
+    js_score  = (js1 + js2 + (6 - js3)) / 3,
+    eng_score = (eng1 + eng2 + eng3) / 3
+  )
+
+supervisors <- supervisors |>
+  mutate(
+    perf_score = (perf1 + perf2 + perf3) / 3,
+    ocb_score  = (ocb1 + ocb2) / 2
+  )
+
+# ── 4. Merge employee and supervisor data ─────────────────────────────────────
+
+study_data <- employees |>
+  inner_join(supervisors, by = "emp_id")
+
+cat("Merged observations:", nrow(study_data), "\n\n")
+
+# ── 5. Export ──────────────────────────────────────────────────────────────────
+
+dir.create("data/cleaned", showWarnings = FALSE)
+write_csv(study_data, "data/cleaned/study_data.csv")
+
+cat("Cleaned data written to data/cleaned/study_data.csv\n")
